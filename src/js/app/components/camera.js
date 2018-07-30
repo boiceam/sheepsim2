@@ -9,7 +9,7 @@ export default class Camera {
         const height = renderer.domElement.height;
 
         // Create and position a Perspective Camera
-        let aspectRatio = width / height;
+        const aspectRatio = width / height;
         this.threeCamera = new THREE.PerspectiveCamera(Config.camera.fov, aspectRatio, Config.camera.near, Config.camera.far);
         this.threeCamera.position.set(Config.camera.posX, Config.camera.posY, Config.camera.posZ);
 

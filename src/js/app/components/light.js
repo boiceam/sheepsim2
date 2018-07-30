@@ -33,7 +33,7 @@ export default class Light {
     }
 
     placeAll() {
-        for (let key in this.lights) {
+        for (const key in this.lights) {
             this.scene.add(this.lights[key]);
         }
     }
