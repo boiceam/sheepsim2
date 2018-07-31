@@ -22,7 +22,7 @@ export default class Model {
             let counter = 0;
             console.log("Model has ", obj.children.length, " children");
             obj.traverse(child => {
-                console.log(child.name);
+                //console.log(child.name);
                 if (child instanceof THREE.Mesh) {
                     child.material.side = THREE.DoubleSide;
                     if(counter === 0) {
@@ -31,7 +31,7 @@ export default class Model {
                     } else if(counter === 1) {
                         child.material.color.setHex(0x00FF00);
                         counter = 2;
-                    }else if(counter === 2) {
+                    } else if(counter === 2) {
                         child.material.color.setHex(0x0000FF);
                         counter = 0;
                     }
@@ -56,7 +56,7 @@ export default class Model {
             if (child instanceof THREE.Mesh) {
                 if(counter === this.current) {
                     child.material.color.setHex(0xFF0000);
-                    console.log(child.name);
+                    //console.log(child.name);
                 } else {
                     child.material.color.setHex(0x00FF00);
                 }

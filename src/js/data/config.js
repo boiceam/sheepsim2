@@ -9,6 +9,9 @@ export default {
     maxAnisotropy: 1,
     dpr: 1,
     duration: 500,
+    backend:{
+        url: "ws://localhost:9999/ws"
+    },
     model: {
         path: './assets/models/model.obj',
         scale: 0.6,

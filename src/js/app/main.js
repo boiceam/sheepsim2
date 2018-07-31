@@ -13,6 +13,7 @@ import Model from './model/model';
 
 // Managers
 import Interaction from './managers/interaction';
+import Backend from './managers/backend';
 
 // data
 import Config from './../data/config';
@@ -23,6 +24,9 @@ export default class Main {
     constructor(container) {
         // Set container property to container element
         this.container = container;
+
+        this.backend = new Backend();
+        this.backend.connect();
 
         // Start Three clock
         this.clock = new THREE.Clock();
@@ -89,6 +93,7 @@ export default class Main {
             this.delay = 0;
             this.model.changeColors();
         }
+        this.backend.getState();
 
         // Call any vendor or module frame updates here
         this.controls.threeControls.update();
