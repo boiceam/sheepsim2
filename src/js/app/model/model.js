@@ -1,8 +1,5 @@
 import * as THREE from 'three';
 
-import OBJLoader from 'three-obj-loader';
-OBJLoader(THREE);
-
 import Helpers from '../../utils/helpers';
 import Config from '../../data/config';
 
@@ -12,26 +9,28 @@ export default class Model {
         this.scene = scene;
 
         // Manager is passed in to loader to determine when loading done in main
-        this.loader = new THREE.OBJLoader(manager);
+        this.loader = new THREE.ObjectLoader(manager);
         this.obj = null;
     }
 
     load() {
         // Load model with OBJLoader
-        this.loader.load(Config.model.path, obj => {
+        this.loader.load(Config.model.path, (obj) => {
+            let box = new THREE.Box3();
+            box.setFromObject(obj);
             let counter = 0;
             console.log("Model has ", obj.children.length, " children");
             obj.traverse(child => {
                 //console.log(child.name);
                 if (child instanceof THREE.Mesh) {
                     child.material.side = THREE.DoubleSide;
-                    if(counter === 0) {
+                    if (counter === 0) {
                         child.material.color.setHex(0xFF0000);
                         counter = 1;
-                    } else if(counter === 1) {
+                    } else if (counter === 1) {
                         child.material.color.setHex(0x00FF00);
                         counter = 2;
-                    } else if(counter === 2) {
+                    } else if (counter === 2) {
                         child.material.color.setHex(0x0000FF);
                         counter = 0;
                     }
@@ -52,16 +51,19 @@ export default class Model {
 
     changeColors() {
         let counter = 0;
+        if (this.obj === null) {
+            return;
+        }
         this.obj.traverse(child => {
             if (child instanceof THREE.Mesh) {
-                if(counter === this.current) {
+                if (counter === this.current) {
                     child.material.color.setHex(0xFF0000);
                     //console.log(child.name);
                 } else {
                     child.material.color.setHex(0x00FF00);
                 }
                 counter++;
-                if(counter === this.obj.children.length){
+                if (counter === this.obj.children.length) {
                     this.current++;
                 }
             }

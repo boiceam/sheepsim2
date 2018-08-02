@@ -1,15 +1,20 @@
+import * as THREE from 'three';
+
 import Keyboard from '../../utils/keyboard';
 import Helpers from '../../utils/helpers';
 import Config from '../../data/config';
 
 // Manages all input interactions
 export default class Interaction {
-    constructor(renderer, scene, camera, controls) {
+    constructor(renderer, scene, model, camera, controls) {
     // Properties
         this.renderer = renderer;
         this.scene = scene;
+        this.model = model;
         this.camera = camera;
         this.controls = controls;
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
 
         this.timeout = null;
 
@@ -49,6 +54,8 @@ export default class Interaction {
 
     onMouseMove(event) {
         event.preventDefault();
+        this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
         clearTimeout(this.timeout);
 
@@ -57,5 +64,17 @@ export default class Interaction {
         }, 200);
 
         Config.isMouseMoving = true;
+    }
+
+    checkRaycaster() {
+        // update the picking ray with the camera and mouse position
+        this.raycaster.setFromCamera( this.mouse, this.camera );
+
+        // calculate objects intersecting the picking ray
+        let intersects = this.raycaster.intersectObjects( this.model.obj.children );
+
+        if(intersects.length > 0){
+            return intersects[0];
+        }
     }
 }

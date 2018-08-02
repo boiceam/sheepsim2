@@ -13,7 +13,7 @@ export default {
         url: "ws://localhost:9999/ws"
     },
     model: {
-        path: './assets/models/model.obj',
+        path: './assets/models/sheep.json',
         scale: 0.6,
         offsetX: 20,
         offsetY: 0,

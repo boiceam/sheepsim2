@@ -27,6 +27,7 @@ export default class Main {
 
         this.backend = new Backend();
         this.backend.connect();
+        this.interaction = null;
 
         // Start Three clock
         this.clock = new THREE.Clock();
@@ -70,7 +71,8 @@ export default class Main {
         // All loaders done now
         this.manager.onLoad = () => {
             // Set up interaction manager with the app now that the model is finished loading
-            new Interaction(this.renderer.threeRenderer, this.scene, this.camera.threeCamera, this.controls.threeControls);
+            this.interaction = new Interaction(this.renderer.threeRenderer,
+                this.scene, this.model, this.camera.threeCamera, this.controls.threeControls);
 
             // Everything is now fully loaded
             Config.isLoaded = true;
@@ -83,9 +85,6 @@ export default class Main {
     }
 
     render() {
-        // Call render function and pass in created scene and camera
-        this.renderer.render(this.scene, this.camera.threeCamera);
-
         // Delta time is sometimes needed for certain updates
         const delta = this.clock.getDelta();
         this.delay += delta;
@@ -95,8 +94,18 @@ export default class Main {
         }
         this.backend.getState();
 
+        if(this.interaction !== null) {
+            const highlighted = this.interaction.checkRaycaster();
+            if(highlighted !== undefined && highlighted.name !== "") {
+                highlighted.object.material.color.set(0x0000FF);
+            }
+        }
+
         // Call any vendor or module frame updates here
         this.controls.threeControls.update();
+        
+        // Call render function and pass in created scene and camera
+        this.renderer.render(this.scene, this.camera.threeCamera);
 
         // RAF
         requestAnimationFrame(this.render.bind(this)); // Bind the main class instead of window object

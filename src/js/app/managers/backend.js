@@ -13,7 +13,7 @@ export default class Backend {
     }
 
     connect() {
-        if(this.connected) {
+        if (this.connected) {
             return;
         }
 
@@ -43,21 +43,21 @@ export default class Backend {
         };
     }
 
-    updateState(data){
+    updateState(data) {
         const updates = data.split("\n");
-        for(let i=0; i<updates.length; i++){
+        for (let i = 0; i < updates.length; i++) {
             const parts = updates[i].split(" ");
-            if(parts[0] === "p") {
+            if (parts[0] === "p") {
                 const panel = Number(parts[1]);
                 let rgb = parts[2].split(",");
-                rgb = [Number(rgb[0]),  Number(rgb[1]),  Number(rgb[2])];
+                rgb = [Number(rgb[0]), Number(rgb[1]), Number(rgb[2])];
                 this.state.party[panel] = rgb
-            } else if(parts[0] === "b") {
+            } else if (parts[0] === "b") {
                 const panel = Number(parts[1]);
                 let rgb = parts[2].split(",");
-                rgb = [Number(rgb[0]),  Number(rgb[1]),  Number(rgb[2])];
+                rgb = [Number(rgb[0]), Number(rgb[1]), Number(rgb[2])];
                 this.state.business[panel] = rgb
-            } else if(parts[0] === "dmx") {
+            } else if (parts[0] === "dmx") {
                 const channel = Number(parts[1]);
                 this.state.dmx[channel] = Number(parts[2]);
             }
